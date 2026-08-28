@@ -1,0 +1,194 @@
+{
+  "classes": [
+    "Anthracnose",
+    "Downy_Mildew",
+    "Healthy",
+    "Mosaic_Virus"
+  ],
+  "min_confidence_threshold": 0.65,
+  "min_margin_threshold": 0.15,
+  "quality_gate_thresholds": {
+    "blur_threshold": 60.0,
+    "dark_threshold": 40.0,
+    "bright_threshold": 235.0,
+    "min_green_ratio": 0.2
+  },
+  "knowledge_base": {
+    "Disclaimer": {
+      "English": "DISCLAIMER: This diagnostic tool provides general agricultural guidance for educational purposes only. It is not professional agronomic advice or certified scientific recommendations. Always consult a local agricultural extension officer or certified agronomist before applying chemical treatments, pesticides, or executing major field alterations.",
+      "Hausa": "GARGAƊI: Wannan manhaja tana ba da shawarwarin gona ne don koyo kawai. Ba shawarar kwararrun masanan gona ba ce. A koda yaushe a tuntubi jami'an gona na yankinku (extension officers) kafin amfani da magungunan feshin bishiyoyi ko daukar manyan matakai a gona."
+    },
+    "Anthracnose": {
+      "name": {
+        "English": "Anthracnose",
+        "Hausa": "Ciwon Digo-digo (Anthracnose)"
+      },
+      "symptoms": {
+        "English": "Dark, water-soaked circular spots on leaves that turn brown or black, dry up and develop shatter holes. Elongated sunken lesions on stems and fruit.",
+        "Hausa": "Digage masu ruwa-ruwa a jikin ganye da ke komawa launin ruwan kasa ko baki, bushewa sannan su yage su bar rami. Tabo mai zurfi a jikin kara da yayan kankana."
+      },
+      "causes": {
+        "English": "Fungal pathogen (Colletotrichum orbiculare) spread by warm, wet weather, splashing rain, infected seed, or diseased crop debris in soil.",
+        "Hausa": "Naman gwari (fungus) da ke yaduwa lokacin zafi da ruwa, feshin ruwan sama, gurbataccen iri, ko ragowar tsohuwar shuka a kasa."
+      },
+      "prevention": {
+        "English": "Use certified disease-free seeds. Practice 3-year crop rotation (avoid planting other cucurbits/melons in the same spot). Clear and burn crop debris after harvest. Space plants adequately to promote airflow and foliage drying.",
+        "Hausa": "Yin amfani da ingantaccen iri mara ciwo. Jujjuya amfanin gona na tsawon shekaru 3 (guji shuka kankana ko kabewa a wuri daya). Share ragowar shuka bayan girbi. Ba da sarari tsakanin shuka don iska ta shiga."
+      },
+      "management": {
+        "English": "Prune and destroy infected lower leaves. Avoid overhead watering to keep leaves dry. If chemical treatment is necessary, apply registered copper-based protective fungicides under expert advice, strictly adhering to label warnings.",
+        "Hausa": "Yanke ganyen kasa da suka kamu sannan a kona su. Guji shayarwa ta sama don barin ganye su bushe. Idan ya zama dole, a fesa maganin kashe naman gwari na copper bisa jagorancin masani da bin ka'idoji."
+      },
+      "farmer_guidance": {
+        "English": "Inspect fields weekly, especially the lower canopy after rainfall. Do not work in the fields when the plants are wet, as this rapidly spreads fungal spores.",
+        "Hausa": "Bincika gona a kalla sau daya a mako, musamman ganyen kasa bayan ruwan sama. Guji aiki a gona lokacin da ganyen kankana ke da jikakken ruwa."
+      }
+    },
+    "Downy_Mildew": {
+      "name": {
+        "English": "Downy Mildew",
+        "Hausa": "Ciwon Downy Mildew (Farin Kura)"
+      },
+      "symptoms": {
+        "English": "Angular, pale green to bright yellow spots on the upper leaf surface, strictly bounded by leaf veins. Under humid conditions, a purplish-gray downy mold appears on the lower leaf surface.",
+        "Hausa": "Digage masu kusurwa da launin dorawa-kore a saman ganye, da ke tsayawa a jijiyoyin ganye. Lokacin danshi, farin kura ko toka mai launin toka-toka tana fitowa a bayan ganye."
+      },
+      "causes": {
+        "English": "Water mold pathogen (Pseudoperonospora cubensis) spread by wind-borne spores and high relative humidity or prolonged leaf wetness.",
+        "Hausa": "Kwayar cutar ruwa (water mold) da ke yaduwa ta hanyar iska da danshi mai yawa ko kuma jikewar ganye na tsawon lokaci."
+      },
+      "prevention": {
+        "English": "Choose resistant watermelon cultivars. Avoid overhead sprinkler irrigation; apply drip or furrow irrigation instead. Space rows wide enough for full sun exposure and ventilation. Rotate crops annually.",
+        "Hausa": "Zabi irin kankana mai jure ciwo. Guji ban-ruwa ta sama (sprinkler); yi amfani da ban-ruwa na karkashin shuka (drip). Bada babban sarari tsakanin layuka don rana da iska su shiga."
+      },
+      "management": {
+        "English": "Quickly remove initial infected leaves to slow down the spread. Apply protective biological or chemical fungicides early in the season if the area has a history of Downy Mildew. Follow localized extension advisory.",
+        "Hausa": "Cire ganyen farko da suka kamu da wuri don rage saurin yaduwa. Fesa maganin kashe naman gwari na rigakafi tun farkon kakar shuka idan gonar tana da tarihin wannan cutar."
+      },
+      "farmer_guidance": {
+        "English": "This pathogen does not survive winter/dry seasons without living hosts, but spores travel long distances on wind currents. Monitor local outbreak reports closely.",
+        "Hausa": "Wannan cutar ba ta rayuwa lokacin rani ba tare da korayen shuke-shuke ba, amma iska tana kawo kwayoyin cutar daga nesa. Kula da sanarwar bullar cutar a yankinku."
+      }
+    },
+    "Mosaic_Virus": {
+      "name": {
+        "English": "Mosaic Virus",
+        "Hausa": "Ciwon Mosaic Virus"
+      },
+      "symptoms": {
+        "English": "Mottled light and dark green patterns (mosaic), blistering, puckering, and severe distortion of leaves. Stunted vine growth and small, misshapen fruit with bumpy skins.",
+        "Hausa": "Lankwashewa, tabo na kore da fari ko rawaya (mosaic), da gurguncewar ganyen kankana. Dakatar da girman shuka da lalacewar siffar kankana da kuraje a jiki."
+      },
+      "causes": {
+        "English": "Plant viruses (such as Cucumber Mosaic Virus or Watermelon Mosaic Virus) transmitted mechanically via tools, hands, or biological vectors like aphids.",
+        "Hausa": "Kwayar cutar virus (kamar Cucumber Mosaic Virus) da kwari (musamman kudan ganye/aphids) ke yadawa, ko ta hanyar kayan aiki da hannun manoma."
+      },
+      "prevention": {
+        "English": "Strictly control insect vectors (aphids) using reflective mulches or organic insecticidal soaps. Eradicate weed hosts from field borders. Wash hands and sterilize tools (using a 10% bleach solution or soap) between plants. Plant virus-resistant varieties.",
+        "Hausa": "Kula da kashe kwari (kudan ganye) ta amfani da sabulun kashe kwari. Cire ciyawa a gefen gona. Wanke hannaye da goge kayan aiki da sinadarin tsaftacewa kafin taba wata shukar."
+      },
+      "management": {
+        "English": "There is no chemical cure for plant viral diseases. Immediately uproot and burn/bury infected plants. Do not compost infected debris. Wash hands thoroughly after handling infected vines.",
+        "Hausa": "Babu maganin warkewa ga cutar virus ta shuka. Tumbuke shukar da ta kamu da wuri sannan a kona ta ko a binne ta. Kada a shigar da ita cikin takin zamani (compost)."
+      },
+      "farmer_guidance": {
+        "English": "Early roguing (uprooting) of infected plants is the single most critical step to save the rest of your watermelon crop. Never touch healthy vines immediately after handling a diseased plant.",
+        "Hausa": "Tumbuke shukar da ta kamu da wuri shine mafi mahimmancin mataki don ceton sauran gonarka. Kada ka taba lafiyayyar shuka bayan ka gama taba wacce ta kamu da ciwon."
+      }
+    },
+    "Healthy": {
+      "name": {
+        "English": "Healthy",
+        "Hausa": "Lafiyayyen Ganye"
+      },
+      "symptoms": {
+        "English": "Broad, vibrant dark green leaves with uniform coloration, no yellowing, spots, or leaf curling. Robust vine extensions and uniform blossom development.",
+        "Hausa": "Ganyaye masu fadi da launin kore mara canji, babu digo-digo, babu rawaya ko lankwashewa. Kyawun bishiya da fitowar furanni masu kyau."
+      },
+      "causes": {
+        "English": "Optimal soil health, proper nutrient balance, correct watering schedules, and successful pest/disease exclusion.",
+        "Hausa": "Kyawun kasar gona, daidaitaccen taki, isasshen ban-ruwa, da nasarar kare gona daga kwari da cututtuka."
+      },
+      "prevention": {
+        "English": "Maintain current farm hygiene and cultural practices. Continue weekly scouting of leaf undersides and keep irrigation consistent to avoid stress.",
+        "Hausa": "Ci gaba da kiyaye tsaftar gona da kula da shuka yadda ya kamata. Ci gaba da duba bayan ganye duk mako don maganin kwari da wuri."
+      },
+      "management": {
+        "English": "No treatment required. Maintain standard irrigation and weed control. Apply compost tea or organic mulches to sustain growth.",
+        "Hausa": "Babu bukatar magani. Ci gaba da ban-ruwa da ciyawa. Ana iya saka takin gargajiya don ci gaba da karfafa shuka."
+      },
+      "farmer_guidance": {
+        "English": "A healthy leaf indicates excellent management. Keep documentation of planting dates, fertilizer application times, and weather patterns to duplicate success next season.",
+        "Hausa": "Lafiyayyen ganye yana nuna kyakkyawan kula. Rubuta ranar shuka, takawa, da yanayin ruwa don samun irin wannan nasarar a kakar shuka ta gaba."
+      }
+    }
+  },
+  "recommendations": {
+    "Anthracnose": {
+      "Low": {
+        "English": "Prune and destroy the few affected lower leaves. Apply mulching to prevent fungal spores from splashing up from the soil. Avoid working in the field while the plants are wet.",
+        "Hausa": "Yanke ganyayyaki kalilan na kasa da abin ya shafa sannan a kona su. A shimfida busasshiyar ciyawa (mulching) don hana feshin kwayar naman gwari daga kasa. Guji aiki a gona lokacin da ganye ke da jikakken ruwa."
+      },
+      "Moderate": {
+        "English": "Remove diseased leaves. Improve spacing between vines to increase air circulation. Apply protective organic or copper-based sprays to limit spread. Switch from overhead irrigation to ground/drip irrigation.",
+        "Hausa": "Cire ganyen da suka kamu da ciwon. Kara sarari tsakanin shuke-shuke don samun shigar iska. Fesa maganin rigakafi na copper don dakatar da yaduwa. Canza ban-ruwa na sama zuwa na karkashin kasa."
+      },
+      "High": {
+        "English": "Severe fungal spread. Immediately pull up and destroy the heavily damaged vines to protect the rest of the crop. Do not compost this debris. Spot-treat neighboring vines with appropriate fungicides and contact local extension officers.",
+        "Hausa": "Naman gwari ya yadu sosai. Tumbuke shukar da ta lalace da gaggawa sannan a lalata ta don kare sauran amfanin gona. Kada a shigar da ita cikin takin zamani. Fesa maganin naman gwari a shuke-shuken makwabta sannan a tuntubi jami'an gona."
+      }
+    },
+    "Downy_Mildew": {
+      "Low": {
+        "English": "Ensure watering is done only in the morning to allow leaves to dry quickly. Prune lower shaded leaves to enhance air flow under the canopy.",
+        "Hausa": "Tabbatar ana ban-ruwa da safe kawai don ganye su bushe da wuri. Yanke tsofaffin ganyen kasa don bari iska ta shiga karkashin ganye."
+      },
+      "Moderate": {
+        "English": "Prune and destroy leaves showing heavy yellow spotting. Apply preventative copper or botanical fungicides. Avoid overhead irrigation.",
+        "Hausa": "Yanke ganyen da ke da digage masu ruwan dorawa da yawa sannan a kona su. Fesa maganin naman gwari na copper ko na gargajiya. Guji ban-ruwa ta sama."
+      },
+      "High": {
+        "English": "Foliage is severely damaged. Destroy heavily infected plants immediately. Apply systemic or protective fungicides to all neighboring watermelon plants to control airborne spore spread. Consult agricultural authorities.",
+        "Hausa": "Ganyaye sun lalace sosai. Halakar da shukar da ta kamu da wuri. Fesa maganin naman gwari na rigakafi a sauran shuke-shuken kankana na kusa don hana yaduwar kwayoyin cutar ta iska. Tuntubi masana gona."
+      }
+    },
+    "Mosaic_Virus": {
+      "Low": {
+        "English": "Isolate the plant and monitor closely. Check for aphid vectors (look for tiny insects on leaf undersides). Disinfect hands and tools with soap/bleach solution after contact.",
+        "Hausa": "Ware wannan shukar kuma a kula da ita sosai. Duba ko akwai kwari (aphids) a bayan ganye. Wanke hannaye da kayan aiki da sabulu bayan taba shukar."
+      },
+      "Moderate": {
+        "English": "Uproot the infected plant immediately and burn or bury it deep. Control aphids on nearby plants using neem oil or soap sprays to prevent virus transmission. Clean all gardening tools thoroughly.",
+        "Hausa": "Tumbuke shukar da ta kamu da wuri sannan a kona ko a binne ta da zurfi. Kashe kwari (aphids) a shuke-shuken kusa ta amfani da man rini (neem oil) don hana yada virus. Wanke kayan aiki sosai."
+      },
+      "High": {
+        "English": "Viral infection has spread widely. Uproot all plants showing mosaic/crinkle symptoms and burn them away from the field. Implement strict vector control (insecticide) across the entire watermelon plot. Avoid touching healthy plants.",
+        "Hausa": "Virus ya yadu sosai. Tumbuke dukkan shuke-shuken da ke nuna alamun mosaic da gaggawa sannan a kona su nesa da gona. Fesa maganin kashe kwari a daukacin gonar kankana don hana yaduwa. Guji taba lafiyayyar shuka."
+      }
+    },
+    "Healthy": {
+      "Low": {
+        "English": "Plant is healthy. Continue standard irrigation and weed control. Keep monitoring leaves weekly.",
+        "Hausa": "Shuka tana da lafiya. Ci gaba da ban-ruwa da ciyawa. Ci gaba da duba ganyaye duk mako."
+      },
+      "Moderate": {
+        "English": "Plant is healthy. Apply compost or organic mulch to retain moisture and sustain vigorous growth.",
+        "Hausa": "Shuka tana da lafiya. A shimfida takin gargajiya ko busasshen ganye (mulch) don rike danshi da inganta girma."
+      },
+      "High": {
+        "English": "Plant is highly healthy and strong. Maintain your current practices. Keep records of your fertilizer and watering schedules to replicate success.",
+        "Hausa": "Shuka tana da koshin lafiya da karfi sosai. Ci gaba da kula da ita kamar yadda kake yi. Rike bayanan takawa da ban-ruwa don maimaita wannan nasarar."
+      }
+    }
+  },
+  "retake_recommendations": {
+    "low_confidence": {
+      "English": "Low diagnostic confidence. Please retake the photo. Ensure the leaf is centered, lies relatively flat, has bright indirect lighting, and there is minimal soil or background weeds visible.",
+      "Hausa": "Karancin tabbaci kan binciken. Da fatan sake daukar hoton. Tabbatar ganyen yana tsakiya, a shimfide, akwai haske mai kyau, kuma babu kasa ko ciyayi da yawa a bayansa."
+    },
+    "quality_failed": {
+      "English": "Image quality check failed. The photo is either too blurry, too dark/bright, or lacks sufficient green leaf area. For best results, retake the photo in good lighting, focus clearly on a single leaf, and hold the camera closer.",
+      "Hausa": "Hoton bai cika ka'idojin inganci ba. Hoton ya yi dishi-dishi, ya yi duhu/haske da yawa, ko kuma babu isasshen koran ganye. Don sakamako mai kyau, sake dauka a cikin haske, kuma a mayar da hankali kan ganye guda daya."
+    }
+  }
+}

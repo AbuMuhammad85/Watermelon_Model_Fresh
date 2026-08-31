@@ -126,29 +126,19 @@ class TestWatermelonPipeline(unittest.TestCase):
         self.assertIn("pull up and destroy", rec_anthracnose_high["recommendation"].lower())
 
     def test_pipeline_diagnose_structure(self):
-        """Verify the full pipeline output dictionary contains all required fields on a leaf."""
-        # Load a representative leaf image or synthetic leaf
-        leaf_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Watermelon", "Healthy", "IMG_2480.jpg")
-        if os.path.exists(leaf_path):
-            leaf_img = Image.open(leaf_path)
-        else:
-            # Synthetic leaf with texture
-            img_np = np.zeros((224, 224, 3), dtype=np.uint8)
-            img_np[:, :, 0] = 40
-            img_np[:, :, 1] = 160
-            img_np[:, :, 2] = 40
-            np.random.seed(42)
-            noise = (np.random.rand(224, 224) * 50).astype(np.uint8)
-            img_np[:, :, 1] = np.clip(img_np[:, :, 1] + noise, 0, 255)
-            leaf_img = Image.fromarray(img_np)
+        """Verify the full pipeline output dictionary contains all required fields."""
+        # Create a simple green dummy leaf image to run through pipeline
+        green_img = Image.fromarray(np.stack([
+            np.ones((224, 224), dtype=np.uint8) * 50,
+            np.ones((224, 224), dtype=np.uint8) * 180,
+            np.ones((224, 224), dtype=np.uint8) * 50
+        ], axis=-1))
         
         # Run diagnose with quality gate bypassed
-        res = self.pipeline.diagnose(leaf_img, bypass_quality_gate=True, lang="English")
+        res = self.pipeline.diagnose(green_img, bypass_quality_gate=True, lang="English")
         
         # Verify structure
         self.assertIn("quality_passed", res)
-        self.assertIn("leaf_gate_passed", res)
-        self.assertIn("leaf_gate_result", res)
         self.assertIn("inference_run", res)
         self.assertIn("diagnosis", res)
         self.assertIn("diagnosis_translated", res)
@@ -161,40 +151,6 @@ class TestWatermelonPipeline(unittest.TestCase):
         
         # Check explicit severity scientific flag is false
         self.assertFalse(res["is_severity_scientific"])
-
-    def test_pipeline_whole_fruit_rejection(self):
-        """Verify that a whole watermelon fruit is stopped before inference with clear messaging."""
-        from PIL import ImageDraw
-        fruit_img = Image.new('RGB', (512, 512), (160, 140, 120))
-        draw = ImageDraw.Draw(fruit_img)
-        draw.ellipse([56, 56, 456, 456], fill=(60, 130, 50))
-        for x in range(80, 440, 35):
-            draw.line([(x, 60), (x - 15, 450)], fill=(25, 65, 25), width=16)
-            
-        res = self.pipeline.diagnose(fruit_img, bypass_quality_gate=True, lang="English")
-        
-        # Must NOT run model inference
-        self.assertFalse(res["inference_run"])
-        self.assertFalse(res["leaf_gate_passed"])
-        self.assertEqual(res["confidence_status"], "REJECTED")
-        self.assertEqual(res["confidence_score"], 0.0)
-        self.assertIn("Please capture a clear watermelon leaf, not the watermelon fruit.", res["recommendation_result"]["recommendation"])
-
-    def test_pipeline_whole_fruit_rejection_hausa(self):
-        """Verify fruit rejection returns clear Hausa guidance when lang is Hausa."""
-        from PIL import ImageDraw
-        fruit_img = Image.new('RGB', (512, 512), (160, 140, 120))
-        draw = ImageDraw.Draw(fruit_img)
-        draw.ellipse([56, 56, 456, 456], fill=(60, 130, 50))
-        for x in range(80, 440, 35):
-            draw.line([(x, 60), (x - 15, 450)], fill=(25, 65, 25), width=16)
-            
-        res = self.pipeline.diagnose(fruit_img, bypass_quality_gate=True, lang="Hausa")
-        
-        self.assertFalse(res["inference_run"])
-        self.assertFalse(res["leaf_gate_passed"])
-        self.assertEqual(res["confidence_status"], "REJECTED")
-        self.assertIn("kankana", res["recommendation_result"]["recommendation"].lower())
 
     def test_soil_background_processing(self):
         """Test that soil background perturbation runs through pipeline crop step."""

@@ -8,7 +8,6 @@ from PIL import Image
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.quality_gate import ImageQualityGate
-from src.leaf_gate import LeafAuthenticityGate
 from src.confidence_gate import ConfidenceGate
 from src.knowledge_base import get_disease_info, DISEASE_KNOWLEDGE_BASE
 from src.recommendation_engine import RecommendationEngine
@@ -32,7 +31,6 @@ class WatermelonDiagnosticPipeline:
             
         # Initialize subcomponents
         self.quality_gate = ImageQualityGate()
-        self.leaf_gate = LeafAuthenticityGate()
         self.confidence_gate = ConfidenceGate(min_confidence=min_confidence, min_margin=min_margin)
         self.rec_engine = RecommendationEngine()
         
@@ -143,14 +141,13 @@ class WatermelonDiagnosticPipeline:
         predictions = self.interpreter.get_tensor(self.output_details[0]["index"])[0]
         return predictions
 
-    def diagnose(self, pil_image, bypass_quality_gate=False, bypass_leaf_gate=False, user_severity=None, lang="English"):
+    def diagnose(self, pil_image, bypass_quality_gate=False, user_severity=None, lang="English"):
         """
         Runs the full diagnostic pipeline on the given image.
         
         Args:
             pil_image (PIL.Image): Watermelon leaf photo.
             bypass_quality_gate (bool): Whether to ignore quality gate warnings.
-            bypass_leaf_gate (bool): Whether to bypass the leaf authenticity gate.
             user_severity (str, optional): Custom severity ("Low", "Moderate", "High"). If none, uses estimated proxy.
             lang (str): Language for outputs ("English" or "Hausa").
             
@@ -178,8 +175,6 @@ class WatermelonDiagnosticPipeline:
                 "quality_passed": False,
                 "quality_metrics": quality_metrics,
                 "quality_warning": quality_warning,
-                "leaf_gate_passed": False,
-                "leaf_gate_result": None,
                 "inference_run": False,
                 "diagnosis": "Unknown",
                 "diagnosis_translated": "Ba a sani ba" if lang == "Hausa" else "Unknown",
@@ -194,42 +189,10 @@ class WatermelonDiagnosticPipeline:
                 "disclaimer": DISEASE_KNOWLEDGE_BASE["Disclaimer"][lang]
             }
             
-        # 2. Run Leaf Authenticity Gate (Heuristic Safety Filter)
-        leaf_result = self.leaf_gate.analyze_leaf(pil_image)
-        
-        if not leaf_result["is_leaf"] and not bypass_leaf_gate:
-            # STOP before disease model inference when the image is not an authentic leaf
-            leaf_msg = leaf_result["message"] if lang == "English" else leaf_result["message_hausa"]
-            rec_result = {
-                "type": "retake_request",
-                "recommendation": leaf_msg,
-                "action_items": [leaf_msg],
-                "is_actionable": False
-            }
-            return {
-                "quality_passed": quality_metrics["passed"],
-                "quality_metrics": quality_metrics,
-                "quality_warning": quality_warning,
-                "leaf_gate_passed": False,
-                "leaf_gate_result": leaf_result,
-                "inference_run": False,
-                "diagnosis": "Non-Leaf / Rejected",
-                "diagnosis_translated": "Ba Ganye Ba / An Ki" if lang == "Hausa" else "Non-Leaf / Rejected",
-                "confidence_status": "REJECTED",
-                "confidence_score": 0.0,
-                "predictions_breakdown": {},
-                "severity_proxy_ratio": 0.0,
-                "severity": "Low",
-                "is_severity_scientific": False,
-                "recommendation_result": rec_result,
-                "disease_info": None,
-                "disclaimer": DISEASE_KNOWLEDGE_BASE["Disclaimer"][lang]
-            }
-            
-        # 3. Run TFLite Model Inference
+        # 2. Run TFLite Model Inference
         predictions = self.run_inference(pil_image)
         
-        # 4. Evaluate Confidence Gate
+        # 3. Evaluate Confidence Gate
         conf_metrics = self.confidence_gate.evaluate_predictions(predictions)
         
         predicted_idx = conf_metrics["top_class_idx"]
@@ -239,7 +202,7 @@ class WatermelonDiagnosticPipeline:
         # Map confidence status
         confidence_status = "LOW_CONFIDENCE" if conf_metrics["uncertain"] else "HIGH_CONFIDENCE"
         
-        # 5. Severity Assessment
+        # 4. Severity Assessment
         severity_ratio, severity_label = self._estimate_severity_proxy(pil_image)
         
         # If the predicted class is healthy, override severity to Low
@@ -250,7 +213,7 @@ class WatermelonDiagnosticPipeline:
         # Use user-specified severity if provided
         final_severity = user_severity if user_severity in ["Low", "Moderate", "High"] else severity_label
         
-        # 6. Recommendation Engine lookup
+        # 5. Recommendation Engine lookup
         rec_result = self.rec_engine.get_recommendation(
             diagnosis=predicted_class_raw,
             confidence_status=confidence_status,
@@ -258,7 +221,7 @@ class WatermelonDiagnosticPipeline:
             lang=lang
         )
         
-        # 7. Disease Knowledge Base lookup
+        # 6. Disease Knowledge Base lookup
         disease_info = None
         diagnosis_translated = predicted_class_raw
         
@@ -284,8 +247,6 @@ class WatermelonDiagnosticPipeline:
             "quality_passed": quality_metrics["passed"],
             "quality_metrics": quality_metrics,
             "quality_warning": quality_warning,
-            "leaf_gate_passed": leaf_result["is_leaf"],
-            "leaf_gate_result": leaf_result,
             "inference_run": True,
             "diagnosis": predicted_class_raw,
             "diagnosis_translated": diagnosis_translated,

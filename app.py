@@ -30,8 +30,6 @@ UI_TRANSLATIONS = {
         "prob_title": "Detailed Probabilities",
         "quality_fail_warning": "⚠️ Image Quality Check Failed",
         "quality_bypass_label": "Bypass Quality Gate and diagnose anyway",
-        "leaf_fail_warning": "⚠️ Leaf Authenticity Check Failed",
-        "leaf_bypass_label": "Bypass Leaf Authenticity Gate and diagnose anyway",
         "retake_msg": "We recommend retaking the photo in clearer conditions.",
         "disclaimer_title": "Important Disclaimer",
         "symptoms": "Symptoms",
@@ -66,8 +64,6 @@ UI_TRANSLATIONS = {
         "prob_title": "Cikakken Rarraba Samfuran Tabbaci",
         "quality_fail_warning": "⚠️ Gwajin Ingancin Hoto Bai Cika Ba",
         "quality_bypass_label": "Guji gargaɗin inganci kuma bincika hoton",
-        "leaf_fail_warning": "⚠️ Binciken Ingancin Ganye Bai Yi Nasara Ba",
-        "leaf_bypass_label": "Guji gargaɗin ganye kuma bincika hoton",
         "retake_msg": "Muna ba da shawarar sake daukar hoton a cikin haske mai kyau.",
         "disclaimer_title": "Gargaɗi mai Muhimmanci",
         "symptoms": "Alamomin Ciwo",
@@ -163,88 +159,82 @@ def main():
                 st.divider()
                 st.header(t["results_header"])
                 
-                # Check if leaf gate rejected the image
-                if not res.get("leaf_gate_passed", True):
-                    st.error(t["leaf_fail_warning"])
+                # Handle low-confidence prediction warnings
+                is_low_conf = (res["confidence_status"] == "LOW_CONFIDENCE")
+                if is_low_conf:
+                    st.warning(t["confidence_warning"])
                     st.info(res["recommendation_result"]["recommendation"])
-                else:
-                    # Handle low-confidence prediction warnings
-                    is_low_conf = (res["confidence_status"] == "LOW_CONFIDENCE")
+                
+                # Columns for Condition and Confidence
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.subheader(t["condition_label"])
+                    # If low confidence, show uncertain label
+                    cond_display = res["diagnosis_translated"]
                     if is_low_conf:
-                        st.warning(t["confidence_warning"])
-                        st.info(res["recommendation_result"]["recommendation"])
+                        st.error(f"**{cond_display}**")
+                    else:
+                        st.success(f"**{cond_display}**")
+                        
+                with col2:
+                    st.subheader(t["confidence_label"])
+                    st.metric(label="", value=f"{res['confidence_score'] * 100:.2f}%")
                     
-                    # Columns for Condition and Confidence
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.subheader(t["condition_label"])
-                        # If low confidence, show uncertain label
-                        cond_display = res["diagnosis_translated"]
-                        if is_low_conf:
-                            st.error(f"**{cond_display}**")
-                        else:
-                            st.success(f"**{cond_display}**")
+                # Show details if prediction is high confidence
+                if not is_low_conf:
+                    st.divider()
+                    st.header(t["severity_header"])
+                    
+                    # Estimate display
+                    est_severity = res["severity"]  # Estimated initially by proxy
+                    
+                    # User selector for severity override
+                    severity_opts = ["Low", "Moderate", "High"] if lang == "English" else ["Low", "Moderate", "High"]
+                    # Map severe options
+                    severity_idx = severity_opts.index(est_severity)
+                    
+                    selected_severity = st.selectbox(
+                        t["severity_adjust_label"],
+                        options=severity_opts,
+                        index=severity_idx
+                    )
+                    
+                    st.caption(t["severity_warning_note"])
+                    
+                    # Fetch recommendation based on the selected severity
+                    rec_result = pipeline.rec_engine.get_recommendation(
+                        diagnosis=res["diagnosis"],
+                        confidence_status=res["confidence_status"],
+                        severity=selected_severity,
+                        lang=lang
+                    )
+                    
+                    # Display recommendation
+                    st.subheader(t["rec_title"])
+                    st.info(rec_result["recommendation"])
+                    
+                    # Display Knowledge Base entries
+                    st.subheader(t["details_title"])
+                    info = res["disease_info"]
+                    if info:
+                        with st.expander(t["symptoms"]):
+                            st.write(info["symptoms"])
+                        with st.expander(t["causes"]):
+                            st.write(info["causes"])
+                        with st.expander(t["prevention"]):
+                            st.write(info["prevention"])
+                        with st.expander(t["management"]):
+                            st.write(info["management"])
+                        with st.expander(t["guidance"]):
+                            st.write(info["farmer_guidance"])
                             
-                    with col2:
-                        st.subheader(t["confidence_label"])
-                        st.metric(label="", value=f"{res['confidence_score'] * 100:.2f}%")
-                        
-                    # Show details if prediction is high confidence
-                    if not is_low_conf:
-                        st.divider()
-                        st.header(t["severity_header"])
-                        
-                        # Estimate display
-                        est_severity = res["severity"]  # Estimated initially by proxy
-                        
-                        # User selector for severity override
-                        severity_opts = ["Low", "Moderate", "High"]
-                        # Map severe options
-                        severity_idx = severity_opts.index(est_severity) if est_severity in severity_opts else 0
-                        
-                        selected_severity = st.selectbox(
-                            t["severity_adjust_label"],
-                            options=severity_opts,
-                            index=severity_idx
-                        )
-                        
-                        st.caption(t["severity_warning_note"])
-                        
-                        # Fetch recommendation based on the selected severity
-                        rec_result = pipeline.rec_engine.get_recommendation(
-                            diagnosis=res["diagnosis"],
-                            confidence_status=res["confidence_status"],
-                            severity=selected_severity,
-                            lang=lang
-                        )
-                        
-                        # Display recommendation
-                        st.subheader(t["rec_title"])
-                        st.info(rec_result["recommendation"])
-                        
-                        # Display Knowledge Base entries
-                        st.subheader(t["details_title"])
-                        info = res["disease_info"]
-                        if info:
-                            with st.expander(t["symptoms"]):
-                                st.write(info["symptoms"])
-                            with st.expander(t["causes"]):
-                                st.write(info["causes"])
-                            with st.expander(t["prevention"]):
-                                st.write(info["prevention"])
-                            with st.expander(t["management"]):
-                                st.write(info["management"])
-                            with st.expander(t["guidance"]):
-                                st.write(info["farmer_guidance"])
-                                
-                    # Detailed Probabilities
-                    if res.get("predictions_breakdown"):
-                        st.divider()
-                        st.subheader(t["prob_title"])
-                        for class_raw, score in res["predictions_breakdown"].items():
-                            class_display = t["classes"].get(class_raw, class_raw)
-                            st.write(f"{class_display}: {score * 100:.2f}%")
-                            st.progress(float(score))
+                # Detailed Probabilities
+                st.divider()
+                st.subheader(t["prob_title"])
+                for class_raw, score in res["predictions_breakdown"].items():
+                    class_display = t["classes"].get(class_raw, class_raw)
+                    st.write(f"{class_display}: {score * 100:.2f}%")
+                    st.progress(float(score))
                     
         except Exception as e:
             st.error(f"Error processing image: {e}")
